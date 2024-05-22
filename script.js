@@ -18,3 +18,30 @@ function getComputerChoice() {
             break;
     }
 }
+
+// Function that asks user for an input and returns it. 
+// Keeps asking until a valid choice is entered.
+function getHumanChoice() {
+    let instruction = `Choose your hand (enter "rock" or "paper"` +
+    ` or "scissors" without quotes): `;
+    let humanChoice;
+    while (true) {
+        // Instruct the user to enter his choice
+        humanChoice = prompt(instruction);
+        // Validate the user's choice
+        switch (humanChoice) {
+            // fall-through for the valid choices
+            case "rock":
+            case "paper":
+            case "scissors":
+                // return the valid choice
+                return humanChoice;
+                break;
+            default:
+                alert(`Your hand of choice "${humanChoice}" is invalid.` +
+                ` Please enter a valid hand.`);
+                // enter the loop again to ask for another choice
+                break;
+        }
+    }
+}
