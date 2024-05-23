@@ -19,29 +19,78 @@ function getComputerChoice() {
     }
 }
 
-// Function that asks user for an input and returns it. 
-// Keeps asking until a valid choice is entered.
+// Function that asks user for an input and returns it.
+// Does not validate the choice.
 function getHumanChoice() {
-    let instruction = `Choose your hand (enter "rock" or "paper"` +
-    ` or "scissors" without quotes): `;
-    let humanChoice;
-    while (true) {
-        // Instruct the user to enter his choice
-        humanChoice = prompt(instruction);
-        // Validate the user's choice
-        switch (humanChoice) {
-            // fall-through for the valid choices
-            case "rock":
-            case "paper":
-            case "scissors":
-                // return the valid choice
-                return humanChoice;
-                break;
-            default:
-                alert(`Your hand of choice "${humanChoice}" is invalid.` +
-                ` Please enter a valid hand.`);
-                // enter the loop again to ask for another choice
-                break;
-        }
+    const instruction = `Choose your hand (enter "rock" or "paper"` +
+        ` or "scissors" without quotes): `;
+    return prompt(instruction);
+}
+
+// Function that plays a single round of rock paper scissors between the player and the computer.
+// More specifically, compares the human and computer's choices. 
+// Announces a winner or a tie and increments the winner's score.
+function playRound(humanChoice, computerChoice) {
+    const COMPUTER_WIN_MESSAGE = "You lose!";
+    const HUMAN_WIN_MESSAGE = "You win!";
+
+    function attributeComputerWin() {
+        console.log(COMPUTER_WIN_MESSAGE + ` ${computerChoice} beats ${humanChoice}`);
+        computerScore++;
+    }
+
+    function attributeHumanWin() {
+        console.log(HUMAN_WIN_MESSAGE + ` ${humanChoice} beats ${computerChoice}`);
+        humanScore++;
+    }
+
+    function declareTie() {
+        console.log("This round is a tie.")
+    }
+
+    switch (humanChoice) {
+        case "rock":
+            switch (computerChoice) {
+                case "rock":
+                    declareTie();
+                    break;
+                case "paper":
+                    attributeComputerWin();
+                    break;
+                case "scissors":
+                    attributeHumanWin();
+                    break;
+            }
+            break;
+        case "paper":
+            switch (computerChoice) {
+                case "rock":
+                    attributeHumanWin();
+                    break;
+                case "paper":
+                    declareTie();
+                    break;
+                case "scissors":
+                    attributeComputerWin();
+                    break;               
+            }
+            break;
+        case "scissors":
+            switch (computerChoice) {
+                case "rock":
+                    attributeComputerWin();
+                    break;
+                case "paper":
+                    attributeHumanWin();
+                    break;
+                case "scissors":
+                    declareTie();
+                    break;
+            }
+            break;
     }
 }
+
+let humanScore = 0;
+let computerScore = 0;
+
