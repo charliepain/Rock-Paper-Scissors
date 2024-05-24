@@ -8,13 +8,13 @@ function getComputerChoice() {
     // each integer corresponds to one of the possible resulting strings
     switch (randomInteger) {
         case 1:
-            return "rock"
+            return "rock";
             break;
         case 2:
-            return "paper"
+            return "paper";
             break;
         case 3:
-            return "scissors"
+            return "scissors";
             break;
     }
 }
@@ -60,7 +60,7 @@ function playGame() {
 
         function declareTie() {
             console.log(`${capitalize(humanChoice)} vs ${capitalize(computerChoice)}.`
-                + " This round is a tie.")
+                + " This round is a tie.");
         }
 
         switch (humanChoice) {
@@ -112,7 +112,7 @@ function playGame() {
     }
 
     const NUMBER_ROUNDS = 5;
-    for (i = 1; i <= NUMBER_ROUNDS; i++) {
+    for (let i = 1; i <= NUMBER_ROUNDS; i++) {
         console.log(`Round ${i}/5. Current score: ${getScoreBoard(humanScore,computerScore)}.`);
         let computerChoice = getComputerChoice();
         let humanChoice;
