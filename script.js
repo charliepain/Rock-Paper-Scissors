@@ -32,123 +32,86 @@ function capitalize(string) {
     return string.at(0).toUpperCase() + string.slice(1, string.length);
 }
 
-// Function that plays the game. 
-// 5 rounds are played and a winner or a tie is declared.
-function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-    // Function that plays a single round of rock paper scissors between the player and the computer.
-    // More specifically, compares the human and computer's choices. 
-    // Announces a winner or a tie for that round and increments the winner's score.
-    function playRound(humanChoice, computerChoice) {
-        const COMPUTER_WIN_MESSAGE = "You lose!";
-        const HUMAN_WIN_MESSAGE = "You win!";
+let humanScore = 0;
+let computerScore = 0;
+// Function that plays a single round of rock paper scissors between the player and the computer.
+// More specifically, compares the human and computer's choices. 
+// Announces a winner or a tie for that round and increments the winner's score.
+function playRound(humanChoice, computerChoice) {
+    const COMPUTER_WIN_MESSAGE = "You lose!";
+    const HUMAN_WIN_MESSAGE = "You win!";
 
-        // Attributes a round win to the computer.
-        function attributeComputerWin() {
-            console.log(COMPUTER_WIN_MESSAGE + ` ${capitalize(computerChoice)}`
-                + ` beats ${capitalize(humanChoice)}.`);
-            computerScore++;
-        }
-
-        // Attributes a round win to the user.
-        function attributeHumanWin() {
-            console.log(HUMAN_WIN_MESSAGE + ` ${capitalize(humanChoice)}`
-                + ` beats ${capitalize(computerChoice)}.`);
-            humanScore++;
-        }
-
-        function declareTie() {
-            console.log(`${capitalize(humanChoice)} vs ${capitalize(computerChoice)}.`
-                + " This round is a tie.");
-        }
-
-        switch (humanChoice) {
-            case "rock":
-                switch (computerChoice) {
-                    case "rock":
-                        declareTie();
-                        break;
-                    case "paper":
-                        attributeComputerWin();
-                        break;
-                    case "scissors":
-                        attributeHumanWin();
-                        break;
-                }
-                break;
-            case "paper":
-                switch (computerChoice) {
-                    case "rock":
-                        attributeHumanWin();
-                        break;
-                    case "paper":
-                        declareTie();
-                        break;
-                    case "scissors":
-                        attributeComputerWin();
-                        break;
-                }
-                break;
-            case "scissors":
-                switch (computerChoice) {
-                    case "rock":
-                        attributeComputerWin();
-                        break;
-                    case "paper":
-                        attributeHumanWin();
-                        break;
-                    case "scissors":
-                        declareTie();
-                        break;
-                }
-                break;
-        }
+    // Attributes a round win to the computer.
+    function attributeComputerWin() {
+        console.log(COMPUTER_WIN_MESSAGE + ` ${capitalize(computerChoice)}`
+            + ` beats ${capitalize(humanChoice)}.`);
+        computerScore++;
     }
 
-    // Returns a string representing the score board
-    function getScoreBoard(humanScore,computerScore) {
-        return `${humanScore} (You) to ${computerScore} (computer)`;
+    // Attributes a round win to the user.
+    function attributeHumanWin() {
+        console.log(HUMAN_WIN_MESSAGE + ` ${capitalize(humanChoice)}`
+            + ` beats ${capitalize(computerChoice)}.`);
+        humanScore++;
     }
 
-    const NUMBER_ROUNDS = 5;
-    for (let i = 1; i <= NUMBER_ROUNDS; i++) {
-        console.log(`Round ${i}/5. Current score: ${getScoreBoard(humanScore,computerScore)}.`);
-        let computerChoice = getComputerChoice();
-        let humanChoice;
-        let invalidChoice = true;
-        // Ask user's choice until it is valid (ignore case)
-        while (invalidChoice) {
-            // choice converted to lower case to ignore case
-            humanChoice = getHumanChoice().toLowerCase();
+    function declareTie() {
+        console.log(`${capitalize(humanChoice)} vs ${capitalize(computerChoice)}.`
+            + " This round is a tie.");
+    }
 
-            // Validate choice
-            switch (humanChoice) {
-                // fall-through for the possible valid choices
+    switch (humanChoice) {
+        case "rock":
+            switch (computerChoice) {
                 case "rock":
-                case "paper":
-                case "scissors":
-                    invalidChoice = false;
+                    declareTie();
                     break;
-                default:
-                    // choice was not among the valid choices
-                    alert("Invalid input");
+                case "paper":
+                    attributeComputerWin();
+                    break;
+                case "scissors":
+                    attributeHumanWin();
                     break;
             }
-        }
-        playRound(humanChoice,computerChoice);
-    }
-
-    function getFinalScore(humanScore,computerScore) {
-        return `Final score: ${getScoreBoard(humanScore,computerScore)}`; 
-    }
-
-    // Declare the winner
-    if (humanScore > computerScore) {
-        console.log(`${getFinalScore(humanScore,computerScore)}. You won!`);
-    } else if (humanScore < computerScore) {
-        console.log(`${getFinalScore(humanScore,computerScore)}. You lost!`);
-    } else {
-        console.log(`${getFinalScore(humanScore,computerScore)}. Game drawn!`);
+            break;
+        case "paper":
+            switch (computerChoice) {
+                case "rock":
+                    attributeHumanWin();
+                    break;
+                case "paper":
+                    declareTie();
+                    break;
+                case "scissors":
+                    attributeComputerWin();
+                    break;
+            }
+            break;
+        case "scissors":
+            switch (computerChoice) {
+                case "rock":
+                    attributeComputerWin();
+                    break;
+                case "paper":
+                    attributeHumanWin();
+                    break;
+                case "scissors":
+                    declareTie();
+                    break;
+            }
+            break;
     }
 }
+
+const buttons = document.querySelector(".choices");
+buttons.addEventListener("click", (e) => {
+    const humanChoice = e.target.textContent.toLowerCase();
+    switch (humanChoice) {
+        // fall-through
+        case "rock":
+        case "paper":
+        case "scissors":
+            playRound(humanChoice, getComputerChoice());
+            break;
+    }
+});
