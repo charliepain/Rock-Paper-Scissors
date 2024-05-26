@@ -32,55 +32,40 @@ function capitalize(string) {
     return string.at(0).toUpperCase() + string.slice(1, string.length);
 }
 
+function updateScore() {
+    const score = document.querySelector(".score");
+    score.textContent =
+        `Current score: ${humanScore} (You), ${computerScore} (Computer)`;
+}
+
 let humanScore = 0;
 let computerScore = 0;
 // Function that plays a single round of rock paper scissors between the player and the computer.
 // More specifically, compares the human and computer's choices. 
 // Announces a winner or a tie for that round and increments the winner's score.
 function playRound(humanChoice, computerChoice) {
-    const COMPUTER_WIN_MESSAGE = "You lose!";
-    const HUMAN_WIN_MESSAGE = "You win!";
-
-    // Attributes a round win to the computer.
-    function attributeComputerWin() {
-        console.log(COMPUTER_WIN_MESSAGE + ` ${capitalize(computerChoice)}`
-            + ` beats ${capitalize(humanChoice)}.`);
-        computerScore++;
-    }
-
-    // Attributes a round win to the user.
-    function attributeHumanWin() {
-        console.log(HUMAN_WIN_MESSAGE + ` ${capitalize(humanChoice)}`
-            + ` beats ${capitalize(computerChoice)}.`);
-        humanScore++;
-    }
-
-    function declareTie() {
-        console.log(`${capitalize(humanChoice)} vs ${capitalize(computerChoice)}.`
-            + " This round is a tie.");
-    }
-
     // resultNumber = 1 if human won, -1 if computer won, 0 if tie
     function displayRoundResults(resultNumber) {
         humanChoice = capitalize(humanChoice);
         computerChoice = capitalize(computerChoice);
-        let finalRoundResultMessage;
+        let roundResultMessage;
         switch (resultNumber) {
             case 0:
-                finalRoundResultMessage = "This round is a tie.";
+                roundResultMessage = "This round is a tie.";
                 break;
             case -1:
-                finalRoundResultMessage = `${computerChoice} beats`
-                + ` ${humanChoice}. You lose this round.`;
+                roundResultMessage = `${computerChoice} beats`
+                    + ` ${humanChoice}. You lose this round.`;
                 break;
             case 1:
-                finalRoundResultMessage = `${humanChoice} beats`
-                + ` ${computerChoice}. You win this round.`
+                roundResultMessage = `${humanChoice} beats`
+                    + ` ${computerChoice}. You win this round.`
                 break;
         }
         const results = document.querySelector(".results");
-        results.textContent = `Results: ${humanChoice} (You) vs ${computerChoice} (Computer). `
-        + finalRoundResultMessage;
+        results.textContent =
+            `Results: ${humanChoice} (You) vs ${computerChoice} (Computer). `
+            + roundResultMessage;
     }
 
     function applyResults(resultNumber) {
@@ -136,10 +121,13 @@ function playRound(humanChoice, computerChoice) {
             }
             break;
     }
+
+
+    updateScore();
 }
 
 const buttons = document.querySelector(".choices");
-buttons.addEventListener("click", (e) => {
+buttons.addEventListener("click", function makeChoice(e) {
     const humanChoice = e.target.textContent.toLowerCase();
     switch (humanChoice) {
         // fall-through
@@ -147,6 +135,37 @@ buttons.addEventListener("click", (e) => {
         case "paper":
         case "scissors":
             playRound(humanChoice, getComputerChoice());
+
+            if (humanScore < 5 && computerScore < 5) break;
+            buttons.removeEventListener("click", makeChoice);
+            const finalGameResult = document.querySelector(
+                ".finalGameResult"
+            );
+            const currentScore = document.querySelector(".score");
+            const finalScore = currentScore.textContent.replace("Current", "Final");
+            if (humanScore === 5) {
+                finalGameResult.textContent =
+                    `${finalScore}. You won this game!`;
+            } else {
+                finalGameResult.textContent =
+                `${finalScore}. You lost this game!`;
+            }
+            // Add restart game button
+            const body = document.querySelector("body");
+            const restartButton = document.createElement("button");
+            restartButton.textContent = "Restart";
+            restartButton.addEventListener("click", (ev) => {
+                humanScore = 0;
+                computerScore = 0;
+                updateScore();
+                finalGameResult.textContent = "";
+                const roundResults = document.querySelector(".results");
+                roundResults.textContent = "Results: None." +
+                " You have yet to choose your hand.";
+                restartButton.remove();
+                buttons.addEventListener("click", makeChoice);
+            });
+            body.appendChild(restartButton);
             break;
     }
 });
