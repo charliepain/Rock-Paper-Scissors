@@ -60,43 +60,78 @@ function playRound(humanChoice, computerChoice) {
             + " This round is a tie.");
     }
 
+    // resultNumber = 1 if human won, -1 if computer won, 0 if tie
+    function displayRoundResults(resultNumber) {
+        humanChoice = capitalize(humanChoice);
+        computerChoice = capitalize(computerChoice);
+        let finalRoundResultMessage;
+        switch (resultNumber) {
+            case 0:
+                finalRoundResultMessage = "This round is a tie.";
+                break;
+            case -1:
+                finalRoundResultMessage = `${computerChoice} beats`
+                + ` ${humanChoice}. You lose this round.`;
+                break;
+            case 1:
+                finalRoundResultMessage = `${humanChoice} beats`
+                + ` ${computerChoice}. You win this round.`
+                break;
+        }
+        const results = document.querySelector(".results");
+        results.textContent = `Results: ${humanChoice} (You) vs ${computerChoice} (Computer). `
+        + finalRoundResultMessage;
+    }
+
+    function applyResults(resultNumber) {
+        switch (resultNumber) {
+            case -1:
+                computerScore++;
+                break;
+            case 1:
+                humanScore++;
+                break;
+        }
+        displayRoundResults(resultNumber);
+    }
+
     switch (humanChoice) {
         case "rock":
             switch (computerChoice) {
                 case "rock":
-                    declareTie();
+                    applyResults(0);
                     break;
                 case "paper":
-                    attributeComputerWin();
+                    applyResults(-1);
                     break;
                 case "scissors":
-                    attributeHumanWin();
+                    applyResults(1);
                     break;
             }
             break;
         case "paper":
             switch (computerChoice) {
                 case "rock":
-                    attributeHumanWin();
+                    applyResults(1);
                     break;
                 case "paper":
-                    declareTie();
+                    applyResults(0);
                     break;
                 case "scissors":
-                    attributeComputerWin();
+                    applyResults(-1);
                     break;
             }
             break;
         case "scissors":
             switch (computerChoice) {
                 case "rock":
-                    attributeComputerWin();
+                    applyResults(-1);
                     break;
                 case "paper":
-                    attributeHumanWin();
+                    applyResults(1);
                     break;
                 case "scissors":
-                    declareTie();
+                    applyResults(0);
                     break;
             }
             break;
