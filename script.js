@@ -19,14 +19,6 @@ function getComputerChoice() {
     }
 }
 
-// Function that asks user for an input and returns it.
-// Does not validate the choice.
-function getHumanChoice() {
-    const instruction = `Choose your hand (enter "rock" or "paper"` +
-        ` or "scissors" without quotes): `;
-    return prompt(instruction);
-}
-
 // Function that capitalizes the first character of a string.
 function capitalize(string) {
     return string.at(0).toUpperCase() + string.slice(1, string.length);
